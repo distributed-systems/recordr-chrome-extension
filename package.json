@@ -1,0 +1,22 @@
+{
+      "name"                            : "playr-recorder"
+    , "description"                     : "Chrome extension that records API calls, used to be played through playr."
+    , "version"                         : "0.1.0"
+    , "homepage"                        : "https://github.com/distributed-systems/playr/"
+    , "author"                          : "Felix Steiner <felix@joinbox.com>"
+    , "licence"                         : "MIT"
+    , "repository": {
+          "url"                         : "https://github.com/distributed-systems/playr.git"
+        , "type"                        : "git"
+    }
+    , "engines": {
+    }
+    , "bugs": {
+        "url"                           : "https://github.com/distributed-systems/playr/issues"
+    }
+    , "devDependencies"                 : {
+        "express"                     : "4.x.x"
+    }
+    , "optionalDependencies"            : {}
+    , "scripts"                         : {}
+}

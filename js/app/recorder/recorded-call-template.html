@@ -1,0 +1,106 @@
+<md-card-content>
+
+	<div layout="column">
+
+		<header ng-click="recordedCall.toggleVisibility()" >
+			<h6 class="md-body-2" layout="row" layout-align="start center">
+				<span style="font-weight:normal;padding-right: 10px;" class="md-hue-2">{{recordedCall.callData.request.method}} {{recordedCall.callData.request.url}}</span> 
+				<span class="md-primary">{{recordedCall.callData.name}}</span>
+				<span flex></span>
+				<md-button ng-click="recordedCall.callData.remove($event)" aria-label="remove">
+					<i class="fa fa-close"></i>
+				</md-button>
+			</h6>
+		</header>
+
+		<md-divider></md-divider>
+
+		<md-content ng-if="recordedCall.isVisible()">
+
+			<!-- REQUEST -->
+			<h2>Request</h2>
+
+			<!-- URL & Pause -->
+			<div layout="row" style="padding-bottom: 20px">
+				<span flex="25">URL</span>
+				<span flex="75" layout="row">
+					<md-input-container flex="100">
+						<label>URL</label>
+						<input ng-model="recordedCall.callData.request.url">
+					</md-input-container>
+				</span>
+			</div>
+
+			<div layout="row" style="padding-bottom: 20px">
+				<span flex="25">Pause</span>
+				<span flex="75" layout="row">
+					<md-input-container flex="100">
+						<label>Pause Before (ms)</label>
+						<input ng-model="recordedCall.callData.request.pauseBefore">
+					</md-input-container>
+				</span>
+			</div>
+
+
+			<!-- POST data -->
+			<div layout="row" style="padding-bottom: 20px" ng-if="recordedCall.callData.request.body">
+				<span flex="25">Request Body</span>
+				<span flex="75" layout="column">
+					<md-input-container layout="row" ng-repeat="data in recordedCall.callData.request.body">
+						<label>{{ data.key }}</label>
+						<input ng-model="data.value">
+					</md-input-container>
+				</span>
+			</div>
+
+
+
+			<!-- Headers -->
+			<div recorded-call-headers request="recordedCall.callData.request"></div>
+
+
+
+
+
+			<!-- RESPONSE -->
+			<h2>Response</h2>
+
+			<!-- Timing -->
+			<div layout="row" style="padding-bottom: 20px">
+				<span flex="25">Timing</span>
+				<span flex="75" layout="row">
+					<md-input-container flex="100">
+						<label>Response Time (shorter than; ms)</label>
+						<input ng-model="recordedCall.callData.response.responseTime.value">
+					</md-input-container>
+				</span>
+			</div>
+
+			<!-- Status -->
+			<div layout="row" style="padding-bottom: 20px">
+				<span flex="25">Status</span>
+				<span flex="75" layout="row">
+					<md-input-container flex="100">
+						<label>HTTP Status Code</label>
+						<input ng-model="recordedCall.callData.response.status">
+					</md-input-container>
+				</span>
+			</div>
+
+			<!-- Headers -->
+			<div recorded-call-headers request="recordedCall.callData.response"></div>
+
+			<!-- Body -->
+			<div layout="row">
+				<div flex="25">Body</div>
+				<div flex="75">
+					<div recorded-call-body data="recordedCall.callData.response.body"></div>
+				</div>
+			</div>
+
+
+		</md-content>
+
+	</div>
+
+</md-card-content>

@@ -1,0 +1,63 @@
+<div ng-repeat="property in recordedCallBodyObject.data.properties">
+
+	<div layout="row" layout-align="start center">
+
+		<!-- Key -->
+		<div flex="30" layout="row">
+			<md-input-container flex="100">
+				<label>Key</label>
+				<input ng-model="property.key"></md-input>
+			</md-input-container>
+		</div>
+
+		<!-- Optional -->
+		<md-checkbox ng-model="property.optional">
+			?
+			<md-tooltip>Optional (property must not be set)</md-tooltip>
+		</md-checkbox>
+
+		<!-- Nullable -->
+		<md-checkbox ng-model="property.nullable" class="md-align-bottom-left">
+			0
+			<md-tooltip>Nullable (property's value may be empty)</md-tooltip>
+		</md-checkbox>
+
+		<!-- Child: Value -->
+		<div flex recorded-call-body-value ng-if="property.type === 'number' || property.type === 'string' || property.type === 'date'" data="property"></div>
+
+		<!-- Children: Display type -->
+		<div flex ng-if="property.type === 'object'">object</div>
+		<div flex ng-if="property.type === 'array'">array</div>
+
+		<!-- Remove -->
+		<md-button ng-click="recordedCallBodyObject.removeProperty( property )">&times;</md-button>
+
+	</div>
+
+	<!-- Child: Object-->
+	<div layout="row" ng-if="property.type === 'object'">
+		<div style="border-right:1px solid #ddd;margin-right:20px;margin-left:20px;"></div>
+		<div recorded-call-body-object data="property" flex></div>
+	</div>
+
+	<!-- Child: Array -->
+	<div layout="row" ng-if="property.type === 'array'">
+		<div style="border-right:1px solid #ddd;margin-right:20px;margin-left:20px;"></div>
+		<div recorded-call-body-array data="property" flex></div>
+	</div>
+
+
+</div>
+
+<!-- Add -->
+<div>
+	<md-button ng-click="recordedCallBodyObject.createNewProperty = true" ng-if="!recordedCallBodyObject.createNewProperty">+ Add property</md-button>
+	<div ng-if="recordedCallBodyObject.createNewProperty" layout="row">
+		<md-input-container>
+			<label>Property key</label>
+			<input ng-model="recordedCallBodyObject.newPropertyKey"></md-input>
+		</md-input-container>
+		<md-button ng-click="recordedCallBodyObject.createProperty()">Create property</md-button>
+		<md-button ng-click="recordedCallBodyObject.createNewProperty = false">Cancel</md-button>
+	</div>
+</div>

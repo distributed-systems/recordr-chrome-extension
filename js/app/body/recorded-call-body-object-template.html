@@ -1,0 +1,45 @@
+<!-- Data -->
+<div ng-if="recordedCallBodyObject.data.getConstraintsByKind( 'object' ).length" flex layout="column">
+
+	<div ng-repeat="property in recordedCallBodyObject.data.getConstraintsByKind( 'object' )[ 0 ].data" layout="row" layout-align="start center" flex style="margin-top:20px;">
+
+		<!-- Property -->
+		<div  style="width:200px;" layout="row">
+			<md-input-container flex>
+				<label>Property</label>
+				<input ng-model="property.name" class="md-block"/>
+			</md-input-container>
+		</div>
+		<div>
+			<!-- minwidth: fucking material has min-width: 88px -->
+			<md-button ng-click="recordedCallBodyObject.data.removeProperty(property)" style="min-width:0;width:40px;">&times;</md-button>
+		</div>
+
+		<!-- Body (depending on type) -->
+		<!-- margin: same as property which has place above for the label -->
+		<div flex recorded-call-body data-data="property.content" flex="75" style="margin-top:20px;">
+		</div>
+
+	</div>
+
+	<!-- ADD PROPERTY -->
+	<div style="width:200px;" layout="row">
+		<!-- Button -->
+		<md-button ng-click="recordedCallBodyObject.startAddingProperty()" ng-if="!recordedCallBodyObject.isAddingProperty" flex>
+			Add property
+		</md-button>
+		<!-- Type -->
+		<md-input-container ng-if="recordedCallBodyObject.isAddingProperty" flex>
+			<label>Type of property to add</label>
+			<md-select ng-model="recordedCallBodyObject.propertyTypeToBeAdded" ng-change="recordedCallBodyObject.addProperty()"/>
+				<md-option ng-repeat="type in recordedCallBodyObject.types" value="{{type.identifier}}">{{type.name}}</md-option>
+			</md-select>
+		</md-input-container>
+	</div>
+
+</div>
+
+<!-- Add Data Button -->
+<!--<div ng-if="!recordedCallBodyObject.data.getConstraintsByKind( 'object' ).length">
+	<md-button ng-click="recordedCallBodyObject.data.createDataConstraint()">Create data constraint</md-button>
+</div>-->

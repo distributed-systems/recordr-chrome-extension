@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+
+	<style>
+
+		/* */
+		[recorded-calls-list] md-card-content,
+		[recorded-calls-list] md-card-content header h6 {
+			padding-top: 0;
+			padding-bottom: 0;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		/* Fuck you, material – don't waist all the space we got! */
+		.header-row md-input-container {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			margin-top: 0;
+			/*background-color: blue;*/
+		}
+
+		/* Don't reserve any space for any shitting error messages that we don't use */
+		md-input-container .md-errors-spacer {
+			display: none;
+		}
+
+		/* Body: move form elements (much!) closer together */
+		/*[recorded-call-body] md-input-container {
+			background-color: red;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		/* Body: Hide stupid error message box that takes 24 px height */
+		/*[recorded-call-body] md-input-container .md-errors-spacer {
+			display: none;
+		}*/
+
+
+	</style>
+
+	</head>
+	<body ng-app="jb.apiRecorder">
+
+		<div recorder-app>
+
+			<div layout="column" layout-fill>
+			  <md-toolbar>
+				<div class="md-toolbar-tools">
+					<span>API Test Recorder</span>
+					<span flex></span>
+
+
+					<!-- Save/Export -->
+					<div ng-if="recorderApp.hasData()">
+						<md-button class="md-primary" ng-click="recorderApp.exportData()">
+							Save
+						</md-button>
+						<md-button class="md-primary" ng-click="recorderApp.clearData()">
+							Clear
+						</md-button>
+					</div>
+
+
+					<!-- SETTINGS -->
+					<md-button class="" aria-label="Settings" ng-click="recorderApp.toggleSettings()" ng-class="{ 'active': recorderApp.settingsVisible() }">
+						<i class="fa fa-cog"></i>
+					</md-button>
+					<!-- RECORD -->
+					<md-button class="md-primary" ng-click="recorderApp.toggleRecord()">
+						<i class="fa" ng-class="{'fa-circle': !recorderApp.isRecording(), 'fa-pause': recorderApp.isRecording()}"></i>
+					</md-button>
+
+				</div>
+			  </md-toolbar>
+
+			  <md-content>
+			  </md-content>
+
+			</div>
+
+
+			<div recorded-calls-list ng-show="!recorderApp.settingsVisible()"></div>
+			<div settings ng-show="recorderApp.settingsVisible()"></div>
+
+
+		</div>
+
+		<script src="js/app/chrome-environment/network.js"></script>
+		<script src="js/app/chrome-environment/storage.js"></script>
+		<script src="js/app/chrome-environment/chrome-environment.js"></script>
+
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="bower_components/angular-aria/angular-aria.js"></script>
+		<script src="bower_components/angular-animate/angular-animate.js"></script>
+		<script src="bower_components/angular-material/angular-material.js"></script>
+
+		<script src="js/app/helpers/recursion-helper.js"></script>
+
+		<script src="js/app/type/string-type-recognizer.js"></script>
+
+		<script src="js/app/body/body-helper.js"></script>
+		
+		<script src="js/app/recorder/api-recorder-service.js"></script>
+		<script src="js/app/exporter/api-calls-exporter.js"></script>
+
+		<script src="js/app/body/body-parser.js"></script>
+		<script src="js/app/body/request-body-parser.js"></script>
+		<script src="js/app/body/recorded-call-body.js"></script>
+		<script src="js/app/body/recorded-call-body-object.js"></script>
+		<script src="js/app/body/recorded-call-body-array.js"></script>
+		<script src="js/app/body/recorded-call-body-value.js"></script>
+
+		<script src="js/app/recorder/recorded-calls-list.js"></script>
+		<script src="js/app/recorder/recorded-call.js"></script>
+		<script src="js/app/recorder/recorded-call-headers.js"></script>
+
+		<script src="js/app/settings/settings-service.js"></script>
+		<script src="js/app/settings/settings.js"></script>
+
+		<script src="js/app/recorder/recorder-app.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+	    <link rel="stylesheet" href="../../../bower_components/angular-material/angular-material.css">
+	    <style>
+		    md-input-container {
+		    	padding-top:3px !important;
+		    	padding-bottom: 3px !important;
+		    }
+	    </style>
+
+	</head>
+	
+	<body ng-app="jb.bodyComponentTest" ng-controller="BodyTestController as bodyTest">
+
+		<div recorded-call-body request="bodyTest.request"></div>
+
+		<script src="../../../bower_components/angular/angular.js"></script>
+		<script src="../../../bower_components/angular-aria/angular-aria.js"></script>
+		<script src="../../../bower_components/angular-animate/angular-animate.js"></script>
+		<script src="../../..//bower_components/angular-material/angular-material.js"></script>
+
+		<script src="../../../js/app/helpers/recursion-helper.js"></script>
+
+		<script src="../../../js/app/type/string-type-recognizer.js"></script>
+		
+		<script src="../../../js/app/body/body-parser.js"></script>
+
+		<script src="../../../js/app/body/recorded-call-body.js"></script>
+		<script src="../../../js/app/body/recorded-call-body-object.js"></script>
+		<script src="../../../js/app/body/recorded-call-body-array.js"></script>
+		<script src="../../../js/app/body/recorded-call-body-value.js"></script>
+
+		<script src="body-component-test.js"></script>
+
+	</body>
+</html>

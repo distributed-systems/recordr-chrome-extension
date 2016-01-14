@@ -1,0 +1,27 @@
+{
+	"name"			: "jb-api-recorder"
+	, "version"		: "0.0.1"
+	, "main"		: "js/devtools.js.js"
+	, "dependencies": {
+		"angular"				: "1.4.x"
+		, "angular-material"	: "1.0.x"
+		, "font-awesome"		: "4.4.x"
+	}
+	, "devDependencies": {
+		"angular-mocks"			: "1.4.x"
+	}
+	, "ignore"		: [
+	]
+	, "license"		: "MIT"
+	, "authors"		: [
+		{ 
+			"name"			: "Felix Steiner"
+			, "email"		: "felix@joinbox.com"
+			, "homepage"	: "http://joinbox.com" 
+		}
+	]
+	, "repository"	: {
+		"type"		: "git"
+		, "url"		: "git://github.com/joinbox/jb-api-wrapper.git"
+	}
+}

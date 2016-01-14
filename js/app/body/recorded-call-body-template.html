@@ -1,0 +1,29 @@
+<div layout="column">
+
+	<div layout="row" flex align="center end">
+
+		<!-- Types cannot be switched. Delete and create instead -->
+		<span style="margin-right: 20px;">Type:</span>
+		<span style="margin-left: 20px;">{{ recordedCallBody.data.getConstraintsByKind( 'type' )[ 0 ].type }}</span>
+		<!--{{recordedCallBody.data.getConstraintsByKind( 'type' )|json}}-->
+
+	</div>
+
+	<div layout="row">
+		<!-- Indent after type -->
+		<div style="border-left: 1px solid #ccc;width:40px;margin-top:10px;"></div>
+
+		<!-- Object -->
+		<div ng-if="recordedCallBody.data.getType() === 'object'" recorded-call-body-object data="recordedCallBody.data" flex>
+		</div>
+
+		<!-- Array -->
+		<div ng-if="recordedCallBody.data.getType() === 'array'" recorded-call-body-array data="recordedCallBody.data" flex>
+		</div>
+
+		<!-- String -->
+		<div ng-if="recordedCallBody.data.getType() === 'string'" recorded-call-body-value data="recordedCallBody.data" flex>
+
+	</div>
+
+</div>

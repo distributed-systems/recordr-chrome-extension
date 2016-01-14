@@ -1,0 +1,14 @@
+{
+	"name": "Distributed API Test Recorder",
+	"description": "An App that records XHR calls and stores them to be run in the Distributed API Test Player.",
+	"version": "0.1",
+	"manifest_version": 2,
+	"devtools_page": "devtools.html",
+	"permissions": [
+		"http://*/*",
+		"https://*/*",
+		"storage"
+	],
+	"minimum_chrome_version": "10.0",
+	"icons": { "16": "stopwatch-16.png", "128": "stopwatch-128.png" }
+}

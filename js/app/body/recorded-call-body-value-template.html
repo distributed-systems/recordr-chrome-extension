@@ -1,0 +1,42 @@
+<!-- Type -->
+<div layout="column">
+
+	<!-- REGEX -->
+	<div ng-repeat="constraint in recordedCallBodyValue.data.getConstraintsByKind('regex')" layout="row">
+		<md-input-container flex>
+			<label>Regular Expression</label>
+			<input ng-model="constraint.value"/>
+		</md-input-container>
+		<md-button ng-click="recordedCallBodyValue.data.removeConstraint(constraint)">&times;</md-button>
+	</div>
+
+	<!-- COMPARATOR -->
+	<div ng-repeat="constraint in recordedCallBodyValue.data.getConstraintsByKind('comparator')" layout="column">
+		<div layout="row">
+			<md-input-container flex="20">
+				<label>Comparator</label>
+				<input ng-model="constraint.comparator" class="md-block"/>
+			</md-input-container flex>
+			<md-input-container flex>
+				<label>Value</label>
+				<input ng-model="constraint.value" class="md-block"/>
+			</md-input-container>
+			<md-button ng-click="recordedCallBodyValue.data.removeConstraint(constraint)">&times;</md-button>
+		</div>
+	</div>
+
+	<!-- ADD CONSTRAINT -->
+	<!-- Button -->
+	<md-button ng-if="!recordedCallBodyValue.isCreatingConstraint" ng-click="recordedCallBodyValue.startCreatingConstraint()" style="width: 200px">Add constraint</md-button>
+	<!-- Select Constraint Type (when adding new constraint) -->
+	<md-input-container ng-if="recordedCallBodyValue.isCreatingConstraint">
+		<label>Select your constraint type</label>
+		<md-select ng-model="recordedCallBodyValue.newConstraintType" ng-change="recordedCallBodyValue.createConstraint()">
+			<md-option ng-repeat="constraint in recordedCallBodyValue.availableConstraints" value="{{constraint.value}}">
+				{{constraint.name}}
+			</md-option>
+		</md-select>
+	</md-input-container>
+
+
+</div>

@@ -1,0 +1,16 @@
+<md-content layout-padding>
+
+	<form name="settingsForm">
+	
+		<h3>Settings</h3>
+
+		<div layout="column">
+			<md-input-container flex="100" layout="row">
+				<label>Discard requests with the following response headers (divide with a space)</label>
+				<input ng-model="settings.data.requestHeadersToDiscard">
+			</md-input-container>
+		</div>
+
+	</form>
+
+</md-content>

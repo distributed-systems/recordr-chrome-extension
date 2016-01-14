@@ -1,0 +1,32 @@
+<div layout="column" flex>
+
+	<!-- Length -->
+	<div layout="row" flex>
+		<md-input-container style="width: 200px">
+			<label>Length comparator</label>
+			<input ng-model="recordedCallBodyArray.data.getConstraintsByKind('array')[0].length.comparator"/>
+		</md-input-container>
+		<md-input-container flex>
+			<label>Length value</label>
+			<input ng-model="recordedCallBodyArray.data.getConstraintsByKind('array')[0].length.value"/>
+		</md-input-container>
+	</div>
+
+	<!-- Data -->
+	<div layout="column" flex>
+		<!-- Create data -->
+		<div ng-if="recordedCallBodyArray.data.getConstraintsByKind('array')[0].data.length === 0">
+			<md-input-container>
+				<label>Data type of array</label>
+				<md-select ng-model="recordedCallBodyArray.newDataType" ng-change="recordedCallBodyArray.setDataType()">
+					<md-option ng-repeat="type in recordedCallBodyArray.types" value="{{type.identifier}}">{{type.name}}</md-option>
+				</md-select>
+			</md-input-container>
+		</div>
+
+		<!-- Has data -->
+		<div ng-if="recordedCallBodyArray.data.getConstraintsByKind('array')[0].data" recorded-call-body data="recordedCallBodyArray.data.getConstraintsByKind('array')[0].data"></div>
+
+	</div>
+
+</div>
