@@ -142,7 +142,12 @@
 
 		// Response Body
 		if( call.response.body ) {
-			response.content = this._parseResponseBody( call.response.body );
+
+			var content = this._parseResponseBody( call.response.body );
+			if( content ) {
+				response.content = content;
+			}
+		
 		}
 
 
@@ -162,7 +167,13 @@
 
 
 	APICallExporter.prototype._parseResponseBody = function( body ) {
-		
+	
+		console.error( body );
+
+		if( !body ) {
+			return false;
+		}
+
 		// Objects that constitute the body all must have an getPlayrJSON method
 		return body.getPlayrJSON();
 
