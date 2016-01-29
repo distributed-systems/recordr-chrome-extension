@@ -49,6 +49,7 @@
 			} );
 
 
+
 			// Strings can only be parsed when they're part of an object (because we use JSON.parse() which doesn't take strings as an argument)
 			it( 'Parses strings correctly', function() {
 
@@ -70,11 +71,60 @@
 					kind			: 'comparator'
 					, comparator	: '='
 					, value			: 'test'
-					, type			: 'string'
+					//, type			: 'string' // Has no string type in this state (is added when exporting through getPlayrJSON)
 				} );
 
 			} );
 
+
+
+			// Primitives
+			it( 'parses other primitive types correctly', function() {
+
+				var tests = [
+					{ 
+						value		: 5.2
+						, type		: jb.entities.NumberEntity
+					}, {
+						value		: 5
+						, type		: jb.entities.NumberEntity
+					}, {
+						value		: true
+						, type		: jb.entities.BooleanEntity
+					}, {
+						value		: '2015-01-20'
+						, type		: jb.entities.DateEntity
+					}, {
+						value		: '2015-01-20T15:20:03+00:00'
+						, type		: jb.entities.DateEntity
+					}, {
+						value		: '2015-01-20T15:20:03Z'
+						, type		: jb.entities.DateEntity
+					}
+				];
+
+				tests.forEach( function( test ) {
+					var parsed = service.parse( JSON.stringify( { value: test.value } ) );
+					var entity = parsed.getConstraintsByKind( 'object' )[ 0 ].data[ 0 ].content;
+					expect( entity instanceof test.type ).toBe( true );
+				} );
+
+			} );
+
+
+
+
+
+			// Null
+			it( 'parses null correctly', function() {
+
+				var parsed = service.parse( JSON.stringify( { value: null } ) );
+				var entity = parsed.getConstraintsByKind( 'object' )[ 0 ].data[ 0 ].content;
+				expect( entity instanceof jb.entities.StringEntity ).toBe( true );
+				expect( entity.getConstraintsByKind( 'nullable' ).length ).toBe( 1 );
+				expect( entity.getConstraintsByKind( 'nullable' )[ 0 ].value ).toBe( true );
+
+			} );
 
 
 

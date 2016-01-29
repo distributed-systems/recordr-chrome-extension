@@ -31,7 +31,7 @@
 
 		it( 'exports single request correctly (request data only)', function() {
 
-			var res = exporter.export( [ {
+			var data = {
 				name			: 'patch-/'
 				, request		: {
 					body		: [ 
@@ -58,17 +58,19 @@
 					, url			: '/'
 				}
 				, response			: {}
-			} ] );
+			};
+
+			// Two requests to check for pause inbetween
+			var res = exporter.export( [ data, data ] );
+
 
 			// AMOUNT of scenarios
-			expect( res.scenario.length ).toBe( 2 );
+			expect( res.scenario.length ).toBe( 3 );
 
-			// PAUSE
-			expect( res.scenario[ 0 ].kind ).toBe( 'pause' );
-			expect( res.scenario[ 0 ].duration ).toBe( 500 );
+			// PAUSE (not before first request!)
 
 			// REQUEST
-			var scenario = res.scenario[ 1 ];
+			var scenario = res.scenario[ 0 ];
 			expect( scenario.kind ).toBe( 'request' );
 			expect( scenario.id ).toBe( 'patch-/');
 
@@ -86,6 +88,13 @@
 			expect( Object.keys( req.content ).length ).toBe( 2 );
 			expect( req.content[ 'name-1' ] ).toBe( 'value-1' );
 			expect( req.content[ 'name-2' ] ).toBe( 'value-2' );
+
+			// PAUSE
+			expect( res.scenario[ 1 ].kind ).toBe( 'pause' );
+			expect( res.scenario[ 1 ].duration ).toBe( 500 );
+
+			// 2nd SCENARIO
+			expect( res.scenario[ 0 ] ).toEqual( res.scenario[ 2 ] );
 
 		} );
 
@@ -154,6 +163,7 @@
 				, comparator			: '<='
 				, value					: 250
 				, type					: 'number'
+				, kind					: 'comparator'
 			} );
 
 
@@ -184,21 +194,7 @@
 		it( 'exports a response body correctly', function() {
 
 			var bodies = [
-				/*{
-					input: {
-						type			: 'object'
-						, properties	: [ {
-							key			: 'name'
-							, type		: 'string'
-							, value		: 'test'
-							, comparator: '='
-						} ]
-					}
-					, output: {
-						kind			: 'object'
-						, 
-					}
-				},*/ {
+				{
 					input: {
 						type				: 'array'
 						, length			: {

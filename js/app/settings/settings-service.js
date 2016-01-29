@@ -19,7 +19,9 @@
 		var Settings = function() {
 
 			this.data = {
-				requestHeadersToDiscard: undefined
+				contentTypesToRecord			: undefined
+				, responseHeadersToIgnore		: undefined
+				, requestHeadersToIgnore		: undefined
 			};
 
 			this.setupChangeListener();

@@ -1,5 +1,5 @@
 /**
-* Directive for a card that represents a single call.
+* Settings directive
 */
 
 ( function() {

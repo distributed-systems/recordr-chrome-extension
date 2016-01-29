@@ -29,17 +29,91 @@
 			display: none;
 		}
 
-		/* Body: move form elements (much!) closer together */
-		/*[recorded-call-body] md-input-container {
-			background-color: red;
-			margin-top: 0;
+
+
+		/**
+		* No margin-bottom for elements in .body-section (response body)
+		*/
+		.body-section md-input-container {
 			margin-bottom: 0;
 		}
 
-		/* Body: Hide stupid error message box that takes 24 px height */
-		/*[recorded-call-body] md-input-container .md-errors-spacer {
+
+		/**
+		* No margin below checkbox for optional/nullable
+		*/
+		.optional-nullable-row md-checkbox {
+			margin-bottom: 2px;
+			margin-top: 7px;
+		}
+
+		/*.optional-nullable-row label {
+			display: none;
+		}
+
+		.optional-nullable-row:hover label {
+			display: block;
+		}
+
+
+		.optional-nullable-row label.checked {
+			display: block;
+		}*/
+
+		/* only show checkboxes on hover, else text */
+		/*.optional-nullable-row .checkboxes {
+			display: none;
+		}
+
+		.optional-nullable-row:hover .checkboxes {
+			display: block;
+		}
+
+		.optional-nullable-row:hover span {
 			display: none;
 		}*/
+
+
+
+		/** 
+		* Hide add property button when not hovered 
+		*/
+		.add-property-button {
+			visibility: hidden;
+		}
+
+		.property-panel:hover .add-property-button {
+			visibility: visible;
+		}
+
+
+		/**
+		* Some space between properties
+		*/
+		.property-panel {
+			margin-top: 10px;
+		}
+
+
+		/**
+		* Highlight body sections «recursively»
+		*/
+		.body-section .body-section:hover {
+			background-color: #e3faff;
+		}
+
+		.body-section .body-section .body-section:hover {
+			background-color: #cbeff7;
+		}
+
+		.body-section .body-section .body-section .body-section:hover {
+			background-color: #b8e9f4;
+		}
+
+		.body-section .body-section .body-section .body-section .body-section:hover {
+			background-color: #a8e2ef;
+		}
+
 
 
 	</style>

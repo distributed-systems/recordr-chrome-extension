@@ -39,6 +39,11 @@
 		
 		}.bind( this ) );
 
+		// Remove pause at the beginning
+		if( ret.scenario.length && ret.scenario[ 0 ].kind === 'pause' ) {
+			ret.scenario.splice( 0, 1 );
+		}
+
 		return ret;
 
 	};
@@ -53,6 +58,8 @@
 	APICallExporter.prototype.parseCall = function( call ) {
 
 		var ret = [];
+
+		console.error( call.request );
 
 		// Pause
 		if( call.request.pauseBefore ) {
@@ -118,6 +125,7 @@
 				, type			: 'number'
 				, value			: call.response.responseTime.value
 				, kind			: 'comparator'
+				, optional		: false
 			};
 		}
 
@@ -167,14 +175,13 @@
 
 
 	APICallExporter.prototype._parseResponseBody = function( body ) {
-	
-		console.error( body );
 
 		if( !body ) {
 			return false;
 		}
 
 		// Objects that constitute the body all must have an getPlayrJSON method
+		console.log( 'APICallExporter: get playr JSON from %o', body );
 		return body.getPlayrJSON();
 
 	};

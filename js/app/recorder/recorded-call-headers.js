@@ -31,11 +31,10 @@
 
 	.controller( 'RecordedCallHeadersController', [ function() {
 
-		var _isAddingHeader			= false
-			, _stringTypeRecognizer	= new jb.StringTypeRecognizer();
+		var _isAddingHeader			= false;
 
 		// Make types available to frontend
-		this.types = _stringTypeRecognizer.types;
+		this.types = jb.StringTypeRecognizer.types;
 
 		this.init = function() {
 			this.newHeaderName = undefined;
@@ -53,16 +52,6 @@
 
 		this.isAddingHeader = function() {
 			return _isAddingHeader;
-		};
-
-
-
-		/**
-		* Returns valid comparators for a certain type
-		*/
-		this.getComparatorsForDataType = function( type ) {
-			var comparators = _stringTypeRecognizer.getComparatorsForType( type );
-			return comparators;
 		};
 
 

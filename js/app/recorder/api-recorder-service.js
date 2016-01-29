@@ -116,14 +116,14 @@
 			return SettingsService.getSettings()
 				.then( function( settings ) {
 			
-					var contentTypesToIgnore = settings.requestHeadersToDiscard;
+					var contentTypesToRecord = settings.contentTypesToRecord;
 
 					// Settings not set: Process all requests
-					if( !contentTypesToIgnore ) {
+					if( !contentTypesToRecord ) {
 						return true;
 					}
 
-					contentTypesToIgnore = contentTypesToIgnore.split( ' ' );
+					contentTypesToRecord = contentTypesToRecord.toLowerCase().split( ' ' );
 					
 					var contentType;
 
@@ -145,15 +145,16 @@
 					} );
 
 
+					// Content type is missing
 					if( !contentType ) {
 						return true;
 					}
 
-					if( contentTypesToIgnore.indexOf( contentType ) > -1 ) {
-						return false;
+					if( contentTypesToRecord.indexOf( contentType.toLowerCase() ) > -1 ) {
+						return true;
 					}
 
-					return true;
+					return false;
 
 				} );
 
@@ -179,15 +180,22 @@
 
 			var self = this;
 
-			var stop = false;
+			var stop = false
+
+				// Store return values of promises
+				, content
+				, settings;
 
 			// content-type of response belongs to settings.requestHeadersToDiscard:
 			// Don't process response
 			this.checkRequestContentType( req )
 
+
+				// Get request's response
 				.then( function( process ) {
 
 					stop = !process;
+
 					if( stop ) {
 						return false;
 					}
@@ -196,12 +204,26 @@
 
 				} )
 
-				// Content gotten
-				.then( function( content ) {
+				// Get Settings
+				.then( function( cont ) {
 
 					if( stop ) {
 						return false;
 					}
+
+					content = cont;
+					return SettingsService.getSettings();
+
+				} )
+
+				// Process stuff
+				.then( function( set ) {
+
+					if( stop ) {
+						return false;
+					}
+
+					settings = set;
 					
 					var call = new Call( self );
 					
@@ -218,7 +240,15 @@
 					// Headers
 					var requestHeaders	= [];
 					req.request.headers.forEach( function( header ) {
-						var reqHeader = new RequestHeader();
+
+						// Ignore headers stored in settings.requestHeadersToIgnore
+						if( settings.requestHeadersToIgnore ) {
+							if( settings.requestHeadersToIgnore.toLowerCase().split( ' ' ).indexOf( header.name.toLowerCase() ) > -1 ) {
+								return;
+							}
+						}
+
+						var reqHeader 		= new RequestHeader();
 						reqHeader.name		= header.name;
 						reqHeader.value		= header.value;
 						requestHeaders.push( reqHeader );
@@ -243,7 +273,8 @@
 
 					// RESPONSE
 					var response 			= new Response();
-					response.headers 		= self.processHeaders( req.response.headers );
+					var headersToIgnore 	= settings.responseHeadersToIgnore ? settings.responseHeadersToIgnore.toLowerCase().split( ' ' ) : [];
+					response.headers 		= self.processResponseHeaders( req.response.headers, headersToIgnore );
 					response.responseTime 	= {
 						comparator			: '<='
 						// Round to 50 ms
@@ -265,7 +296,7 @@
 
 					response.body			= {};
 					// Only try to parse JSON bodies
-					if( contentType && contentType.indexOf( 'application/json' ) === 0 ) {
+					if( contentType && ( contentType.indexOf( 'application/json' ) === 0 || contentType.indexOf( 'text/json' ) === 0 ) ) {
 						var responseBody	= BodyParserService.parse( content );
 						response.body		= responseBody;
 					}
@@ -291,12 +322,18 @@
 		};
 
 
-
-		APIRecorder.prototype.processHeaders = function( headers ) {
+		/**
+		* @param <Array> headersToIgnore			Headers to ignore (remove), array of lowercase strings
+		*/
+		APIRecorder.prototype.processResponseHeaders = function( headers, headersToIgnore ) {
 	
 			var ret = [];
 
 			headers.forEach( function( header ) {
+
+				if( headersToIgnore.indexOf( header.name.toLowerCase() ) > -1 ) {
+					return;
+				}
 
 				var retHeader			= new ResponseHeader();
 				retHeader.name 			= header.name;

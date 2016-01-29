@@ -49,13 +49,10 @@
 
 	/**
 	* "Static method". Takes data and returns entities that represent it. 
+	* null becomes a StringEntity
 	*/
 	Entity.createEntityForData = function( data ) {
 
-		// Especially needed as typeof null === 'object'
-		if( !data ) {
-			return undefined;
-		}
 
 		if( Array.isArray( data ) ) {
 
@@ -65,7 +62,7 @@
 
 		}
 
-		else if( typeof data === 'object' ) {
+		else if( typeof data === 'object' && data !== null ) {
 
 			var objectEntity = new ObjectEntity();
 			objectEntity.setupFromData( data );
@@ -73,16 +70,69 @@
 
 		}
 		
+		else if( data === false || data === true ) {
+
+			var boolEntity = new BooleanEntity();
+			boolEntity.setupFromData( data );
+			return boolEntity;
+
+		}
+
 		else {
 
-			var stringEntity = new StringEntity();
-			stringEntity.setupFromData( data );
-			return stringEntity;
+			var stringType = new window.jb.StringTypeRecognizer().recognizeType( data )
+				, entity;
+
+			switch( stringType ) {
+
+				case 'number':
+					entity = new NumberEntity();
+					break;
+
+				case 'date':
+					entity = new DateEntity();
+					break;
+
+				case 'string':
+					entity = new StringEntity();
+					break;
+
+				default: 
+					alert( 'Unknown string type: ' + stringType );
+					return;
+
+			}
+
+			entity.setupFromData( data );
+			return entity;
+
 
 		}
 
 	};
 
+
+
+
+	/**
+	* Nullable/optional: Can be added through frontend by clicking checkboxes
+	* @param <String> name			'optional' or 'nullable'
+	*/
+	Entity.prototype.toggleNullableOrOptionalConstraint = function( name ) {
+
+		var constraint = this.getConstraintsByKind( name );
+
+		if( constraint.length ) {
+			this.constraints.splice( this.constraints.indexOf( constraint ), 1 );
+		}
+		else {
+			this.addConstraint( {
+				kind		: name
+				, value		: true
+			} );
+		}
+
+	};
 
 
 
@@ -411,36 +461,43 @@
 
 
 
-	var StringEntity = function() {
+
+	/**
+	* Base entity for string, number, date
+	*/
+	var ValueEntity = function( type ) {
 
 		Entity.apply( this, arguments );
 
+		// Store type
+		this.type = type;
+
 		this.addConstraint( {
 			kind		: 'type'
-			, type		: 'string'
+			, type		: type
 		} );
 
 	};
 
-	StringEntity.prototype = Object.create( Entity.prototype );
-	StringEntity.prototype.constructor = StringEntity;
+	ValueEntity.prototype = Object.create( Entity.prototype );
+	ValueEntity.prototype.constructor = ValueEntity;
 
-	StringEntity.prototype.removeConstraint = function( constraint ) {
+	ValueEntity.prototype.removeConstraint = function( constraint ) {
 
 		var removed = this.constraints.splice( this.constraints.indexOf( constraint ), 1 );
 		if( !removed.length ) {
-			console.error( 'StringEntity: constraint %o not found, could not be removed from %o', constraint, this.constraints );
+			console.error( 'ValueEntity: constraint %o not found, could not be removed from %o', constraint, this.constraints );
 		}
 
 	};
 
-	StringEntity.prototype.createConstraint = function( type ) {
+	ValueEntity.prototype.createConstraint = function( type ) {
 
 		if( type === 'comparator' ) {
 			this.addConstraint( {
 				kind			: 'comparator'
 				, comparator	: '='
-				, type			: 'string'
+				//, type		: this.type  -- Added in getPlayrJSON
 				, value			: 'value'
 			} );
 		}
@@ -456,22 +513,147 @@
 
 	};
 
-	StringEntity.prototype.setupFromData = function( data ) {
+	ValueEntity.prototype.setupFromData = function( data ) {
 
 		this.addConstraint( {
 			kind			: 'comparator'
 			, comparator	: '='
-			, type			: 'string'	
+			//, type		: this.type	 -- Added in getPlayrJSON
 			, value			: data
 		} );
+
+		// Nullable
+		if( data === null ) {
+			this.addConstraint( {
+				kind		: 'nullable'
+				, value		: true
+			} );
+		}
 
 	};
 
 
 	// Re-format data to export it for Playr
-	StringEntity.prototype.getPlayrJSON = function() {
+	ValueEntity.prototype.getPlayrJSON = function() {
+
+		var ret = [];
+
+		// Add «type» property to comparator constraints. As type may be changed in the frontend
+		// we can only add the type property to the constraint object when exporting data.
+		this.constraints.forEach( function( constraint, index ) {
+
+			if( constraint.kind === 'comparator' ) {
+
+				var constraintClone = this.constraints.slice( index, index + 1 )[ 0 ];
+				constraintClone.type = this.type;
+				ret.push( constraintClone );
+
+			}
+
+			else {
+				ret.push( constraint );
+			}
+
+		}.bind( this ) );
+
+		return ret;
+
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	var StringEntity = function() {
+
+		ValueEntity.apply( this, [ 'string' ] );
+
+	};
+
+	StringEntity.prototype = Object.create( ValueEntity.prototype );
+	StringEntity.prototype.constructor = StringEntity;
+
+
+
+
+
+
+
+	var NumberEntity = function() {
+
+		ValueEntity.apply( this, [ 'number' ] );
+
+	};
+
+	NumberEntity.prototype = Object.create( ValueEntity.prototype );
+	NumberEntity.prototype.constructor = NumberEntity;
+
+
+
+
+
+
+	var DateEntity = function() {
+
+		ValueEntity.apply( this, [ 'date' ] );
+
+	};
+
+	DateEntity.prototype = Object.create( ValueEntity.prototype );
+	DateEntity.prototype.constructor = DateEntity;
+
+
+
+
+
+
+
+
+
+
+
+	var BooleanEntity = function() {
+
+		Entity.apply( this, arguments );
+
+		this.addConstraint( {
+			kind		: 'type'
+			, type		: 'boolean'
+		} );
+
+	};
+
+	BooleanEntity.prototype = Object.create( Entity.prototype );
+	BooleanEntity.prototype.constructor = BooleanEntity;
+
+	BooleanEntity.prototype.setupFromData = function( data ) {
+		this.addConstraint( {
+			kind			: 'comparator'
+			, comparator	: '='
+			, type			: 'boolean'	
+			, value			: data
+		} );
+	};
+
+	BooleanEntity.prototype.getPlayrJSON = function() {
 		return this.constraints;
 	};
+
+
+
+
+
 
 
 
@@ -488,6 +670,9 @@
 	jb.entities.ObjectEntity = ObjectEntity;
 	jb.entities.ArrayEntity = ArrayEntity;
 	jb.entities.StringEntity = StringEntity;
+	jb.entities.BooleanEntity = BooleanEntity;
+	jb.entities.NumberEntity = NumberEntity;
+	jb.entities.DateEntity = DateEntity;
 	jb.entities.Entity = Entity;
 
 
@@ -537,9 +722,11 @@
 				return undefined;
 			}
 
-			return parseEntity( json );
+			var ret = parseEntity( json );
 
-			//return new jb.entities.ObjectEntity();
+			console.log( 'BodyParser: Parsed %o into %o', data, ret );
+
+			return ret;
 
 		};
 

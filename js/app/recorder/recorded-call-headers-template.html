@@ -6,8 +6,8 @@ not used to compare anything.
 
 
 <div layout="row">
-	<div flex="25">Headers</div>
-	<div flex="75" layout="column">
+	<div style="width:250px">Headers</div>
+	<div flex layout="column">
 
 		<!-- List headers -->
 		<div ng-repeat="header in recordedCallHeaders.request.headers" layout="row" class="header-row">
@@ -20,7 +20,7 @@ not used to compare anything.
 			</div>
 
 			<!-- Type -->
-			<md-input-container style="margin-right: 20px;"  ng-if="header.headerType === 'response'">
+			<md-input-container style="margin-right: 20px;min-width:100px;"  ng-if="header.headerType === 'response'">
 				<label>Type</label>
 				<md-select ng-model="header.type">
 					<md-option ng-repeat="type in recordedCallHeaders.types">{{type}}</md-option>
@@ -30,9 +30,7 @@ not used to compare anything.
 			<!-- Comparator -->
 			<md-input-container style="margin-right: 20px;"  ng-if="header.headerType === 'response'">
 				<label>Comparator</label>
-				<md-select ng-model="header.comparator">
-					<md-option ng-repeat="comparator in recordedCallHeaders.getComparatorsForDataType(header.type)">{{ comparator }}</md-option>
-				</md-select>
+				<input ng-model="header.comparator" />
 			</md-input-container>
 
 			<!-- Value -->

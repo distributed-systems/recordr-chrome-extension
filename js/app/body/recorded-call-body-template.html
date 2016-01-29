@@ -1,28 +1,62 @@
-<div layout="column">
+<!-- .body-section: needed for coloring of the background -->
+<div layout="column" class="body-section">
 
-	<div layout="row" flex align="center end">
+	<div layout="row" flex layout-align="start end">
 
 		<!-- Types cannot be switched. Delete and create instead -->
-		<span style="margin-right: 20px;">Type:</span>
-		<span style="margin-left: 20px;">{{ recordedCallBody.data.getConstraintsByKind( 'type' )[ 0 ].type }}</span>
-		<!--{{recordedCallBody.data.getConstraintsByKind( 'type' )|json}}-->
+		<div ng-if="recordedCallBody.data.getType() === 'object' || recordedCallBody.data.getType() === 'array'" style="margin-top: 20px">
+			<span style="margin-right: 10px;">Type:</span>
+			<span style="margin-left: 10px;"><strong>{{ recordedCallBody.data.getConstraintsByKind( 'type' )[ 0 ].type }}</strong></span>
+		</div>
 
 	</div>
 
 	<div layout="row">
+
 		<!-- Indent after type -->
-		<div style="border-left: 1px solid #ccc;width:40px;margin-top:10px;"></div>
+		<div style="border-left: 2px dotted #000;width:40px;margin-top:10px;"></div>
 
-		<!-- Object -->
-		<div ng-if="recordedCallBody.data.getType() === 'object'" recorded-call-body-object data="recordedCallBody.data" flex>
+		<div layout="column" flex>
+
+			<!-- Nullable / Optional -->
+			<div class="optional-nullable-row">
+
+				<div class="checkboxes">
+					<label>
+						<md-checkbox type="checkbox" aria-label="Optional" ng-click="recordedCallBody.data.toggleNullableOrOptionalConstraint('optional')" ng-checked="recordedCallBody.data.getConstraintsByKind('optional').length"></md-checkbox>
+						Opt.
+					</label>
+
+					<label style="margin-left:20px;">
+						<md-checkbox type="checkbox" aria-label="Nullable" ng-click="recordedCallBody.data.toggleNullableOrOptionalConstraint('nullable')" ng-checked="recordedCallBody.data.getConstraintsByKind('nullable').length"></md-checkbox>
+						Null
+					</label>
+				</div>
+
+			</div>
+
+
+			<!-- Object -->
+			<div ng-if="recordedCallBody.data.getType() === 'object'" recorded-call-body-object data="recordedCallBody.data" flex>
+			</div>
+
+			<!-- Array -->
+			<div ng-if="recordedCallBody.data.getType() === 'array'" recorded-call-body-array data="recordedCallBody.data" flex>
+			</div>
+
+			<!-- String -->
+			<div ng-if="recordedCallBody.data.getType() === 'string'" recorded-call-body-value data="recordedCallBody.data" flex></div>
+
+			<!-- Bool -->
+			<div ng-if="recordedCallBody.data.getType() === 'boolean'" recorded-call-body-value data="recordedCallBody.data" flex></div>
+
+			<!-- Date -->
+			<div ng-if="recordedCallBody.data.getType() === 'date'" recorded-call-body-value data="recordedCallBody.data" flex></div>
+
+			<!-- Number -->
+			<div ng-if="recordedCallBody.data.getType() === 'number'" recorded-call-body-value data="recordedCallBody.data" flex></div>
+
 		</div>
-
-		<!-- Array -->
-		<div ng-if="recordedCallBody.data.getType() === 'array'" recorded-call-body-array data="recordedCallBody.data" flex>
-		</div>
-
-		<!-- String -->
-		<div ng-if="recordedCallBody.data.getType() === 'string'" recorded-call-body-value data="recordedCallBody.data" flex>
 
 	</div>
 

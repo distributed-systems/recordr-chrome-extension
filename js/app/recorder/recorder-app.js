@@ -95,7 +95,10 @@
 
 		this.exportData = function() {
 
-			var json = JSON.stringify( APIRecorderService.exportCalls(), null, 4 );
+			// Don't use JSON.stringify, as objects returned may still contain angular shit ($$hashKey)
+			var json = angular.toJson( APIRecorderService.exportCalls(), null, 4 );
+			// Now format the JSON beautifully
+			json = JSON.stringify( JSON.parse( json ), null, 4 );
 
 			// Inspiration: http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
 			var textarea = document.createElement( 'textarea' );

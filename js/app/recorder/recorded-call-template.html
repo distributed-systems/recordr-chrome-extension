@@ -22,18 +22,18 @@
 
 			<!-- URL & Pause -->
 			<div layout="row" style="padding-bottom: 20px">
-				<span flex="25">URL</span>
-				<span flex="75" layout="row">
+				<span style="width:250px;">URL</span>
+				<span flex layout="row">
 					<md-input-container flex="100">
 						<label>URL</label>
-						<input ng-model="recordedCall.callData.request.url">
+						<input ng-model="recordedCall.callData.request.completeUrl">
 					</md-input-container>
 				</span>
 			</div>
 
 			<div layout="row" style="padding-bottom: 20px">
-				<span flex="25">Pause</span>
-				<span flex="75" layout="row">
+				<span style="width:250px">Pause</span>
+				<span flex layout="row">
 					<md-input-container flex="100">
 						<label>Pause Before (ms)</label>
 						<input ng-model="recordedCall.callData.request.pauseBefore">
@@ -44,8 +44,8 @@
 
 			<!-- POST data -->
 			<div layout="row" style="padding-bottom: 20px" ng-if="recordedCall.callData.request.body">
-				<span flex="25">Request Body</span>
-				<span flex="75" layout="column">
+				<span style="width:250px">Request Body</span>
+				<span flex layout="column">
 					<md-input-container layout="row" ng-repeat="data in recordedCall.callData.request.body">
 						<label>{{ data.key }}</label>
 						<input ng-model="data.value">
@@ -67,8 +67,8 @@
 
 			<!-- Timing -->
 			<div layout="row" style="padding-bottom: 20px">
-				<span flex="25">Timing</span>
-				<span flex="75" layout="row">
+				<span style="width:250px">Timing</span>
+				<span flex layout="row">
 					<md-input-container flex="100">
 						<label>Response Time (shorter than; ms)</label>
 						<input ng-model="recordedCall.callData.response.responseTime.value">
@@ -78,8 +78,8 @@
 
 			<!-- Status -->
 			<div layout="row" style="padding-bottom: 20px">
-				<span flex="25">Status</span>
-				<span flex="75" layout="row">
+				<span style="width:250px">Status</span>
+				<span flex layout="row">
 					<md-input-container flex="100">
 						<label>HTTP Status Code</label>
 						<input ng-model="recordedCall.callData.response.status">
@@ -92,8 +92,8 @@
 
 			<!-- Body -->
 			<div layout="row">
-				<div flex="25">Body</div>
-				<div flex="75">
+				<div style="width:250px">Body</div>
+				<div flex>
 					<div recorded-call-body data="recordedCall.callData.response.body"></div>
 				</div>
 			</div>

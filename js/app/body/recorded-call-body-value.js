@@ -31,6 +31,9 @@
 
 		var _element;
 
+		// Make types available to frontend
+		this.types = jb.StringTypeRecognizer.types;
+
 		this.isCreatingConstraint = false;
 		this.availableConstraints = [ {
 				name		: 'Regular Expression'

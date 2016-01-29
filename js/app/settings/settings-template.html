@@ -5,10 +5,22 @@
 		<h3>Settings</h3>
 
 		<div layout="column">
+
 			<md-input-container flex="100" layout="row">
-				<label>Discard requests with the following response headers (divide with a space)</label>
-				<input ng-model="settings.data.requestHeadersToDiscard">
+				<label>Only record requests with the following <strong>content-type</strong> headers (divide with a space)</label>
+				<input ng-model="settings.data.contentTypesToRecord">
 			</md-input-container>
+
+			<md-input-container flex="100" layout="row">
+				<label>Ignore the following <strong>response</strong> headers (divide with a space)</label>
+				<input ng-model="settings.data.responseHeadersToIgnore">
+			</md-input-container>
+
+			<md-input-container flex="100" layout="row">
+				<label>Ignore the following <strong>request</strong> headers (divide with a space)</label>
+				<input ng-model="settings.data.requestHeadersToIgnore">
+			</md-input-container>
+
 		</div>
 
 	</form>
