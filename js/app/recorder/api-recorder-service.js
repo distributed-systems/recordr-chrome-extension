@@ -227,9 +227,13 @@
 					
 					var call = new Call( self );
 					
-					var shortUrl = req.request.url.substr( req.request.url.lastIndexOf( '/' ) + 1 );
+					// pathname with queryString
+					var link = document.createElement( 'a' );
+					link.setAttribute( 'href', req.request.url );
+					var shortUrl = link.pathname + link.search;
 
-					call.name = req.request.method.toLowerCase() + '-' + shortUrl;
+					// Identifier
+					call.name = req.request.method.toLowerCase() + link.pathname.toLowerCase().replace( /\//g, '-' );
 
 
 					// REQUEST

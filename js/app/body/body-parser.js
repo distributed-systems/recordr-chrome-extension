@@ -23,16 +23,23 @@
 			identifier		: 'object'
 			, name			: 'Object'
 		}, {
-			identifier		: 'number'
-			, name			: 'Number'
-		}, {
 			identifier		: 'array'
 			, name			: 'Array'
 		}, {
 			identifier		: 'string'
 			, name			: 'String'
+		}, {
+			identifier		: 'number'
+			, name			: 'Number'
+		}, {
+			identifier		: 'boolean'
+			, name			: 'Boolean'
+		}, {
+			identifier		: 'date'
+			, name			: 'Date'
 		}
 	];
+
 
 	// Static method that creates sub types based on argument (from Entity.types)
 	Entity.getTypeInstance = function( type ) {

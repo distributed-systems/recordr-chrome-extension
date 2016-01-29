@@ -32,7 +32,7 @@
 		<!-- Type -->
 		<md-input-container ng-if="recordedCallBodyObject.isAddingProperty" flex>
 			<label>Type of property to add</label>
-			<md-select ng-model="recordedCallBodyObject.propertyTypeToBeAdded" ng-change="recordedCallBodyObject.addProperty()"/>
+			<md-select ng-model="recordedCallBodyObject.propertyTypeToBeAdded" ng-change="recordedCallBodyObject.addProperty()">
 				<md-option ng-repeat="type in recordedCallBodyObject.types" value="{{type.identifier}}">{{type.name}}</md-option>
 			</md-select>
 		</md-input-container>
